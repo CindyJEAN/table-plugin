@@ -4,8 +4,7 @@ import styles from "./styles.module.css";
 
 export const TablePlugin = ({ data, headCells }) => {
   return (
-    <div>
-    {/* <div className="tablePlugin"> */}
+    <div className={styles.component}>
       <table>
         <thead>
           <tr>

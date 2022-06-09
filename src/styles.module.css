@@ -1,18 +1,18 @@
 /* add css module styles here (optional) */
 
-/* .table {
-  border-collapse: collapse;
-} */
-table {
+.component table {
   border-collapse: collapse;
 }
+/* table {
+  border-collapse: collapse;
+} */
 
-th {
+.component th {
   border: solid 1px black;
   padding: 0.5rem 1rem;
 }
 
-td {
+.component td {
   border: solid 1px black;
   padding: 5px 0.5rem;
 }
