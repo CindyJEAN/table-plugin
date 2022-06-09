@@ -1,9 +1,11 @@
 import React from "react";
-import "./styles.css";
+// import "./styles.css";
+import styles from "./styles.module.css";
 
 export const TablePlugin = ({ data, headCells }) => {
   return (
-    <div className="tablePlugin">
+    <div>
+    {/* <div className="tablePlugin"> */}
       <table>
         <thead>
           <tr>
