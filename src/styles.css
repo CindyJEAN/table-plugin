@@ -1,13 +1,13 @@
-table {
+.tablePlugin table {
   border-collapse: collapse;
 }
 
-th {
+.tablePlugin th {
   border: solid 1px black;
   padding: 0.5rem 1rem;
 }
 
-td {
+.tablePlugin td {
   border: solid 1px black;
   padding: 5px 0.5rem;
 }

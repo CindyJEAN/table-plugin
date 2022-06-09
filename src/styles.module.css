@@ -1,9 +1,15 @@
 /* add css module styles here (optional) */
 
-.test {
-  margin: 2em;
-  padding: 0.5em;
-  border: 2px solid #000;
-  font-size: 2em;
-  text-align: center;
+table {
+  border-collapse: collapse;
+}
+
+th {
+  border: solid 1px black;
+  padding: 0.5rem 1rem;
+}
+
+td {
+  border: solid 1px black;
+  padding: 5px 0.5rem;
 }
