@@ -1,10 +1,15 @@
 import React, { useEffect, useState } from "react";
 import styles from "./styles.module.css";
+import { sortArray } from "./utils/helper";
 
 export const TablePlugin = ({ data, headCells }) => {
-  const [tableData, setTableData] = useState([]);
+  const [tableData, setTableData] = useState(data);
   const [sortOrder, setSortOrder] = useState("asc");
-  const [sortField, setSortField] = useState("");
+  const [sortField, setSortField] = useState("lastName");
+
+  useEffect(() => {
+    setTableData(data);
+  }, []);
 
   function handleSortRequest(headCell) {
     const order =
@@ -13,36 +18,36 @@ export const TablePlugin = ({ data, headCells }) => {
     setSortField(headCell);
   }
 
-  function sortArray(data, sortOrder, sortField) {
-    const sortedArray = data.sort((a, b) => {
-      return (
-        a[sortField].localeCompare(b[sortField]) *
-        (sortOrder === "asc" ? 1 : -1)
-      );
-    });
-    return sortedArray;
-  }
-
-  useEffect(() => {
-    setTableData(data);
-  }, []);
-
   useEffect(() => {
     const sortedArray = sortArray(tableData, sortOrder, sortField);
     setTableData(sortedArray);
   }, [sortOrder, sortField]);
-
 
   return (
     <div className={styles.component}>
       <table>
         <thead>
           <tr>
-            {headCells.map((headCell, index) => (
-              <th key={index} onClick={() => handleSortRequest(headCell.data)}>
-                {headCell.label}
-              </th>
-            ))}
+            {headCells.map((headCell, index) => {
+              const sortDirection =
+                sortField === headCell.data ? sortOrder : false;
+              const arrowClassName =
+                sortDirection === "asc"
+                  ? "up"
+                  : sortDirection === "desc"
+                  ? "down"
+                  : "default";
+              return (
+                <th
+                  key={index}
+                  onClick={() => handleSortRequest(headCell.data)}
+                  className={arrowClassName}
+                >
+                  {headCell.label}
+                  {/* <img src="arrow_down.svg" /> */}
+                </th>
+              );
+            })}
           </tr>
         </thead>
         <tbody>

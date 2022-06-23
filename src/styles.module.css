@@ -10,7 +10,17 @@
 .component th {
   border: solid 1px black;
   padding: 0.5rem 1rem;
+  cursor: pointer;
 }
+
+/* .component th img {
+  width: 15px;
+} */
+
+/* .component th::after {
+
+  width: 15px;
+} */
 
 .component td {
   border: solid 1px black;
