@@ -34,3 +34,11 @@ img.up {
   transform: rotate(0.5turn);
 }
 
+.select {
+  display: flex;
+  align-items: center;
+  column-gap: 10px;
+}
+/* .select p {
+  display: inline;
+} */

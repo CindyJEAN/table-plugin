@@ -108,5 +108,27 @@
     "city": "Duluth",
     "state": "Minnesota",
     "zipCode": "55805"
+  },
+  {
+    "firstName": "Ame",
+    "lastName": "Faireclough",
+    "startDate": "2018-12-21",
+    "department": "Support",
+    "dateOfBirth": "1990-09-25",
+    "street": "55 Northridge Terrace",
+    "city": "Duluth",
+    "state": "Minnesota",
+    "zipCode": "55805"
+  },
+  {
+    "firstName": "Ame",
+    "lastName": "Faireclough",
+    "startDate": "2018-12-21",
+    "department": "Support",
+    "dateOfBirth": "1990-09-25",
+    "street": "55 Northridge Terrace",
+    "city": "Duluth",
+    "state": "Minnesota",
+    "zipCode": "55805"
   }
 ]

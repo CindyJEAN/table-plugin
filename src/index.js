@@ -8,6 +8,7 @@ export const TablePlugin = ({ data, headCells }) => {
   const [tableData, setTableData] = useState(data);
   const [sortOrder, setSortOrder] = useState("asc");
   const [sortField, setSortField] = useState("lastName");
+  const [rowsLimit, setRowsLimit] = useState(10);
 
   useEffect(() => {
     setTableData(data);
@@ -24,17 +25,38 @@ export const TablePlugin = ({ data, headCells }) => {
     setSortField(headCell);
   }
 
+  function handleRowsLimitChange(e) {
+    setRowsLimit(e.target.value);
+  }
+
   useEffect(() => {
     // const sortHeadCell = headCells.find(
     //   (headCell) => headCell.data === sortField
     // );
     // const sortedArray = sortArray(tableData, sortOrder, sortHeadCell);
-    const sortedArray = sortArray(tableData, sortOrder, sortField);
-    setTableData(sortedArray);
-  }, [sortOrder, sortField]);
+    const sortedArray = sortArray(data, sortOrder, sortField);
+    const splicedArray = sortedArray.slice(0, rowsLimit - 1);
+    setTableData(splicedArray);
+  }, [sortOrder, sortField, rowsLimit]);
 
   return (
     <div className={styles.component}>
+      <div className={styles.select}>
+        <label htmlFor={"rowsLimit"}>Show</label>
+        <select
+          id="rowsLimit"
+          value={rowsLimit}
+          onChange={handleRowsLimitChange}
+          required
+        >
+          {[10, 25, 50, 100].map((number, index) => (
+            <option key={index} value={number}>
+              {number}
+            </option>
+          ))}
+        </select>
+        <p>entries</p>
+      </div>
       <table>
         <thead>
           <tr>
@@ -78,7 +100,7 @@ export const TablePlugin = ({ data, headCells }) => {
 
 /**
  * format date in local format
- * @param   {String}  date 
+ * @param   {String}  date
  * @return  {String}        formated date
  */
 function formatDate(date) {
