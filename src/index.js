@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Pagination } from "./components/pagination";
 import styles from "./styles.module.css";
 import { formatDate, sortArray } from "./utils/helper";
 
@@ -8,14 +9,7 @@ export const TablePlugin = ({ data, headCells }) => {
   const [sortOrder, setSortOrder] = useState("asc");
   const [sortField, setSortField] = useState("lastName");
   const [rowsLimit, setRowsLimit] = useState(10);
-  // const [currentPage, setCurrentPage] = useState(1);
-  const [pagesConfig, setPagesConfig] = useState({ current: 1, length: 1 });
-  // const [config, setConfig] = useState({
-  //   sortOrder: "asc",
-  //   sortField: "lastName",
-  //   rowsLimit: 10,
-  //   currentPage: 1,
-  // });
+  const [lastRow, setLastRow] = useState(0);
 
   useEffect(() => {
     setTableData(data);
@@ -36,39 +30,14 @@ export const TablePlugin = ({ data, headCells }) => {
     setRowsLimit(e.target.value);
   }
 
-  function handlePageChange(move) {
-    if (dataLength <= rowsLimit) return;
-    const newPage = pagesConfig.current + move;
-    if (newPage > pagesConfig.length || newPage < 1) return;
-    setPagesConfig({ ...pagesConfig, current: newPage });
-  }
-
   useEffect(() => {
     const sortedArray = sortArray(data, sortOrder, sortField);
 
-    const pagesLength = Math.ceil(dataLength / rowsLimit);
-    setPagesConfig({...pagesConfig, length: pagesLength });
+    const splicedArray = sortedArray.slice(lastRow - rowsLimit, lastRow - 1);
 
-    const endIndex = pagesConfig.current * rowsLimit;
-
-    const splicedArray = sortedArray.slice(endIndex - rowsLimit, endIndex - 1);
-    
     setTableData(splicedArray);
+  }, [sortOrder, sortField, rowsLimit, lastRow]);
 
-  }, [sortOrder, sortField, rowsLimit, pagesConfig.current]);
-
-  const buttons = [
-    {
-      label: "Previous",
-      move: -1,
-      disabled: Boolean(pagesConfig.current === 1),
-    },
-    {
-      label: "Next",
-      move: 1,
-      disabled: Boolean(pagesConfig.current === pagesConfig.length),
-    },
-  ];
   return (
     <div className={styles.component}>
       <div className={styles.select}>
@@ -127,23 +96,12 @@ export const TablePlugin = ({ data, headCells }) => {
           ))}
         </tbody>
       </table>
-      <div className={styles.pagination}>
-        <p>Showing ... to ... of ... entries</p>
-        <div>
-          <p>
-            Page {pagesConfig.current}/{pagesConfig.length}
-          </p>
-          {buttons.map((btn) => (
-            <button
-              key={btn.label}
-              onClick={() => handlePageChange(btn.move)}
-              className={btn.disabled ? styles.disabled : ""}
-            >
-              {btn.label}
-            </button>
-          ))}
-        </div>
-      </div>
+      <Pagination
+        dataLength={dataLength}
+        rowsLimit={rowsLimit}
+        lastRow={lastRow}
+        setLastRow={setLastRow}
+      />
     </div>
   );
 };
