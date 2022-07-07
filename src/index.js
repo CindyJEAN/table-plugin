@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import styles from "./styles.module.css";
 import { sortArray } from "./utils/helper";
+const logo = `${require("./arrow_down.svg")}`;
+// const logo = "/static/media/arrow_down.svg";
 
 export const TablePlugin = ({ data, headCells }) => {
   const [tableData, setTableData] = useState(data);
@@ -11,6 +13,10 @@ export const TablePlugin = ({ data, headCells }) => {
     setTableData(data);
   }, []);
 
+  /**
+   * sets field to sort and its order (asc or desc)
+   * @param   {Object}  headCell
+   */
   function handleSortRequest(headCell) {
     const order =
       headCell === sortField && sortOrder === "asc" ? "desc" : "asc";
@@ -19,6 +25,10 @@ export const TablePlugin = ({ data, headCells }) => {
   }
 
   useEffect(() => {
+    // const sortHeadCell = headCells.find(
+    //   (headCell) => headCell.data === sortField
+    // );
+    // const sortedArray = sortArray(tableData, sortOrder, sortHeadCell);
     const sortedArray = sortArray(tableData, sortOrder, sortField);
     setTableData(sortedArray);
   }, [sortOrder, sortField]);
@@ -41,10 +51,9 @@ export const TablePlugin = ({ data, headCells }) => {
                 <th
                   key={index}
                   onClick={() => handleSortRequest(headCell.data)}
-                  className={arrowClassName}
                 >
                   {headCell.label}
-                  {/* <img src="arrow_down.svg" /> */}
+                  <img src={logo} className={styles[arrowClassName]} />
                 </th>
               );
             })}
@@ -53,8 +62,11 @@ export const TablePlugin = ({ data, headCells }) => {
         <tbody>
           {tableData?.map((row, rowIndex) => (
             <tr key={rowIndex}>
-              {headCells.map(({ data: headCell }) => {
-                return <td key={headCell}>{row[headCell] || ""}</td>;
+              {headCells.map((headCell) => {
+                const value = row[headCell.data];
+                const formatedValue =
+                  headCell.type === "date" ? formatDate(value) : value;
+                return <td key={headCell.data}>{formatedValue || ""}</td>;
               })}
             </tr>
           ))}
@@ -63,3 +75,15 @@ export const TablePlugin = ({ data, headCells }) => {
     </div>
   );
 };
+
+/**
+ * format date in local format
+ * @param   {String}  date 
+ * @return  {String}        formated date
+ */
+function formatDate(date) {
+  const splitDate = date.split("-");
+  // let formatedDate = splitDate[2] + "/" + splitDate[1] + "/" + splitDate[0];
+  let formatedDate = [...splitDate].reverse().join("/");
+  return formatedDate;
+}

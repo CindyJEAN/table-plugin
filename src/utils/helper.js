@@ -1,8 +1,9 @@
 function sortArray(data, sortOrder, sortField) {
-  const sortedArray = [...data].sort((a, b) => {
-    return (
-      a[sortField].localeCompare(b[sortField]) * (sortOrder === "asc" ? 1 : -1)
-    );
+  let dataToSort = [...data];
+
+  const sortedArray = dataToSort.sort((a, b) => {
+    const comparison = a[sortField].localeCompare(b[sortField]);
+    return comparison * (sortOrder === "asc" ? 1 : -1);
   });
   return sortedArray;
 }
