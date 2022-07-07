@@ -42,3 +42,26 @@ img.up {
 /* .select p {
   display: inline;
 } */
+
+.pagination {
+  display: flex;
+  justify-content: space-between;
+}
+
+.pagination div {
+  display: flex;
+  column-gap: 1rem;
+  align-items: center;
+}
+
+.pagination button {
+  cursor: pointer;
+  border-radius: 3px;
+  border: 1px solid grey;
+}
+
+.pagination .disabled {
+  cursor: auto;
+  color: grey;
+  border: 1px solid rgb(200, 200, 200);
+}

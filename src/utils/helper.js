@@ -8,4 +8,16 @@ function sortArray(data, sortOrder, sortField) {
   return sortedArray;
 }
 
-export { sortArray };
+/**
+ * format date in local format
+ * @param   {String}  date
+ * @return  {String}        formated date
+ */
+ function formatDate(date) {
+  const splitDate = date.split("-");
+  let formatedDate = [...splitDate].reverse().join("/");
+  return formatedDate;
+}
+
+
+export { sortArray, formatDate };
