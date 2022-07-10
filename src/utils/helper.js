@@ -13,11 +13,49 @@ function sortArray(data, sortOrder, sortField) {
  * @param   {String}  date
  * @return  {String}        formated date
  */
- function formatDate(date) {
+function formatDate(date) {
   const splitDate = date.split("-");
   let formatedDate = [...splitDate].reverse().join("/");
   return formatedDate;
 }
 
+/**
+ * get pages to show depending on current active page and number of pages in the table,
+ * and where to put ellipis
+ *
+ * @param   {Number}  length   number of pages in the table
+ * @param   {Number}  current  current active page
+ *
+ * @return  {Array}           pages as numbers and ellipis
+ */
+function getPages(length, current) {
+  const pages = [];
+  if (length <= 5) {
+    for (let i = 1; i <= length; i++) {
+      pages.push(i);
+    }
+  } else {
+    pages.push(1);
 
-export { sortArray, formatDate };
+    if (current <= 4) {
+      for (let i = 2; i <= 5 && i < length - 1; i++) {
+        pages.push(i);
+      }
+      pages.push("...", length);
+    } else if (current >= length - 3) {
+      pages.push("...");
+      for (let i = length === 6 ? 3 : length - 4; i <= length; i++) {
+        pages.push(i);
+      }
+    } else {
+      pages.push("...");
+      for (let i = current - 2; i <= current + 2; i++) {
+        pages.push(i);
+      }
+      pages.push("...", length);
+    }
+  }
+  return pages;
+}
+
+export { sortArray, formatDate, getPages };

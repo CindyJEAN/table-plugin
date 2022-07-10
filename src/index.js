@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { Pagination } from "./components/pagination";
 import styles from "./styles.module.css";
-import { formatDate, sortArray } from "./utils/helper";
+import { formatDate, getPages, sortArray } from "./utils/helper";
 
 export const TablePlugin = ({ data, headCells }) => {
   const dataLength = data.length;
   const [tableData, setTableData] = useState(data);
   const [sortOrder, setSortOrder] = useState("asc");
   const [sortField, setSortField] = useState("lastName");
-  const [rowsLimit, setRowsLimit] = useState(10);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
   const [lastRow, setLastRow] = useState(0);
 
   useEffect(() => {
@@ -26,26 +26,27 @@ export const TablePlugin = ({ data, headCells }) => {
     setSortField(headCell);
   }
 
-  function handleRowsLimitChange(e) {
-    setRowsLimit(e.target.value);
+  function handleRowsPerPageChange(e) {
+    setRowsPerPage(e.target.value);
   }
 
   useEffect(() => {
     const sortedArray = sortArray(data, sortOrder, sortField);
-
-    const splicedArray = sortedArray.slice(lastRow - rowsLimit, lastRow - 1);
+    // console.log("sortedArray", sortedArray);
+    const splicedArray = sortedArray.slice(lastRow - rowsPerPage, lastRow - 1);
+    // console.log("splicedArray", splicedArray);
 
     setTableData(splicedArray);
-  }, [sortOrder, sortField, rowsLimit, lastRow]);
+  }, [sortOrder, sortField, rowsPerPage, lastRow]);
 
   return (
     <div className={styles.component}>
       <div className={styles.select}>
-        <label htmlFor={"rowsLimit"}>Show</label>
+        <label htmlFor={"rowsPerPage"}>Show</label>
         <select
-          id="rowsLimit"
-          value={rowsLimit}
-          onChange={handleRowsLimitChange}
+          id="rowsPerPage"
+          value={rowsPerPage}
+          onChange={handleRowsPerPageChange}
           required
         >
           {[10, 25, 50, 100].map((number, index) => (
@@ -98,7 +99,7 @@ export const TablePlugin = ({ data, headCells }) => {
       </table>
       <Pagination
         dataLength={dataLength}
-        rowsLimit={rowsLimit}
+        rowsPerPage={rowsPerPage}
         lastRow={lastRow}
         setLastRow={setLastRow}
       />
