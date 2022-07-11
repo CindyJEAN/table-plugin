@@ -34,8 +34,12 @@ img.up {
   opacity: 1;
   transform: rotate(0.5turn);
 }
+.tableHeader {
+  display: flex;
+  justify-content: space-between;
+}
 
-.select {
+.tableHeader > div {
   display: flex;
   align-items: center;
   column-gap: 10px;

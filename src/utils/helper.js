@@ -58,4 +58,14 @@ function getPages(length, current) {
   return pages;
 }
 
-export { sortArray, formatDate, getPages };
+function filterArray(data, filter) {
+  const filteredData = data.filter((row) => {
+    const hasSearchInput = Object.values(row).some((el) =>
+      el.toLowerCase().includes(filter.toLowerCase())
+    );
+    if (hasSearchInput) return row;
+  });
+  return filteredData;
+}
+
+export { sortArray, formatDate, getPages, filterArray };

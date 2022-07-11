@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Pagination } from "./components/pagination";
 import styles from "./styles.module.css";
-import { formatDate, getPages, sortArray } from "./utils/helper";
+import { filterArray, formatDate, getPages, sortArray } from "./utils/helper";
 
 export const TablePlugin = ({ data, headCells }) => {
   const dataLength = data.length;
@@ -10,6 +10,7 @@ export const TablePlugin = ({ data, headCells }) => {
   const [sortField, setSortField] = useState("lastName");
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [lastRow, setLastRow] = useState(0);
+  const [filter, setFilter] = useState("");
 
   useEffect(() => {
     setTableData(data);
@@ -26,36 +27,54 @@ export const TablePlugin = ({ data, headCells }) => {
     setSortField(headCell);
   }
 
+  function handleSearchInputChange(e) {
+    setFilter(e.target.value);
+  }
+
   function handleRowsPerPageChange(e) {
     setRowsPerPage(e.target.value);
   }
 
   useEffect(() => {
-    const sortedArray = sortArray(data, sortOrder, sortField);
-    // console.log("sortedArray", sortedArray);
+    let array = data;
+    if (filter) {
+      array = filterArray(data, filter);
+    }
+    const sortedArray = sortArray(array, sortOrder, sortField);
     const splicedArray = sortedArray.slice(lastRow - rowsPerPage, lastRow - 1);
-    // console.log("splicedArray", splicedArray);
 
     setTableData(splicedArray);
-  }, [sortOrder, sortField, rowsPerPage, lastRow]);
+  }, [sortOrder, sortField, rowsPerPage, lastRow, filter]);
 
   return (
     <div className={styles.component}>
-      <div className={styles.select}>
-        <label htmlFor={"rowsPerPage"}>Show</label>
-        <select
-          id="rowsPerPage"
-          value={rowsPerPage}
-          onChange={handleRowsPerPageChange}
-          required
-        >
-          {[10, 25, 50, 100].map((number, index) => (
-            <option key={index} value={number}>
-              {number}
-            </option>
-          ))}
-        </select>
-        <p>entries</p>
+      <div className={styles.tableHeader}>
+        <div>
+          <label htmlFor={"rowsPerPage"}>Show</label>
+          <select
+            id="rowsPerPage"
+            value={rowsPerPage}
+            onChange={handleRowsPerPageChange}
+            required
+          >
+            {[10, 25, 50, 100].map((number, index) => (
+              <option key={index} value={number}>
+                {number}
+              </option>
+            ))}
+          </select>
+          <p>entries</p>
+        </div>
+        <div>
+          <label htmlFor={"search"}>Search :</label>
+          <input
+            type="search"
+            id="search"
+            name="search"
+            value={filter}
+            onChange={handleSearchInputChange}
+          />
+        </div>
       </div>
       <table>
         <thead>
@@ -95,6 +114,11 @@ export const TablePlugin = ({ data, headCells }) => {
               })}
             </tr>
           ))}
+          {filter && !tableData.length && (
+            <tr>
+              <td colSpan={headCells.length}>No matching records found</td>
+            </tr>
+          )}
         </tbody>
       </table>
       <Pagination
