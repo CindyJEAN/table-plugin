@@ -1,9 +1,17 @@
-function sortArray(data, sortOrder, sortField) {
+/**
+ * Sorts array depending on active field and sort order
+ * @param   {Array}  data  
+ * @param   {Object}  sort  
+ * @param   {String}  sort.field  
+ * @param   {String}  sort.order  
+ * @return  {Array}        sorted array
+ */
+function sortArray(data, sort) {
   let dataToSort = [...data];
 
   const sortedArray = dataToSort.sort((a, b) => {
-    const comparison = a[sortField].localeCompare(b[sortField]);
-    return comparison * (sortOrder === "asc" ? 1 : -1);
+    const comparison = a[sort.field].localeCompare(b[sort.field]);
+    return comparison * (sort.order === "asc" ? 1 : -1);
   });
   return sortedArray;
 }
@@ -58,6 +66,13 @@ function getPages(length, current) {
   return pages;
 }
 
+/**
+ * Returns array or rows that include search input
+ * @param   {Array}  data    
+ * @param   {String}  filter  search input
+ *
+ * @return  {Array}         filtered array
+ */
 function filterArray(data, filter) {
   const filteredData = data.filter((row) => {
     const hasSearchInput = Object.values(row).some((el) =>

@@ -2,28 +2,44 @@ import React, { useEffect, useState } from "react";
 import styles from "../styles.module.css";
 import { getPages } from "../utils/helper";
 
-export function Pagination({ dataLength, rowsPerPage, lastRow, setLastRow }) {
+export function Pagination({
+  originalDataLength,
+  dataLength,
+  rowsPerPage,
+  rowsToShow,
+  setRowsToShow,
+}) {
   const [currentPage, setCurrentPage] = useState(1);
-  const [pagesLength, setPagesLength] = useState(1);
-  const [lastRowToShow, setLastRowToShow] = useState(0);
-  const [pages, setPages] = useState(getPages(pagesLength, currentPage));
+  const [pages, setPages] = useState([1, "..."]);
 
   useEffect(() => {
-    const length = Math.ceil(dataLength / rowsPerPage);
-    setPagesLength(length);
-    if (length < currentPage) setCurrentPage(length);
+    const pagesLength = Math.ceil(dataLength / rowsPerPage);
+    setPages(getPages(pagesLength, currentPage));
 
-    let endIndex = currentPage * rowsPerPage;
-    setLastRow(endIndex);
+    let firstIndex = rowsToShow[0];
+    const newPage = Math.ceil(firstIndex / rowsPerPage);
+    let endIndex = newPage * rowsPerPage;
     if (endIndex > dataLength) endIndex = dataLength;
-    setLastRowToShow(endIndex);
-    setPages(getPages(length, currentPage));
-  }, [currentPage, rowsPerPage, dataLength]);
+    const rows = [endIndex - rowsPerPage + 1, endIndex];
+
+    setCurrentPage(Number(newPage));
+    console.log("rows when change in state", rows);
+    setRowsToShow(rows);
+  }, [dataLength, rowsPerPage]);
+
+
+
 
   function handlePageChange(newPage) {
     if (dataLength <= rowsPerPage) return;
-    if (newPage > pagesLength || newPage < 1) return;
-    setCurrentPage(newPage);
+    if (newPage > pages.length || newPage < 1) return;
+    setCurrentPage(Number(newPage));
+    let endIndex = newPage * rowsPerPage;
+    if (endIndex > dataLength) endIndex = dataLength;
+    const rows = [endIndex - rowsPerPage + 1, endIndex];
+    console.log("rows in handlePage", rows);
+    setRowsToShow(rows);
+    //Prendre en compte peu d'entrées (ex filtré).Ajouter fonction getRowsToShow? Vu qu'on l'utilise à 2 endroits
   }
 
   const buttons = [
@@ -35,16 +51,23 @@ export function Pagination({ dataLength, rowsPerPage, lastRow, setLastRow }) {
     {
       label: "Next",
       move: 1,
-      disabled: Boolean(currentPage === pagesLength),
+      disabled: Boolean(currentPage === pages.length),
     },
   ];
 
   return (
     <div className={styles.pagination}>
-      <p>
-        Showing {lastRow - rowsPerPage + 1} to {lastRowToShow} of {dataLength}{" "}
-        entries
-      </p>
+      {dataLength === originalDataLength ? (
+        <p>
+          Showing {rowsToShow[0]} to {rowsToShow[1]} of {dataLength} entries
+        </p>
+      ) : (
+        <p>
+          Showing {rowsToShow[0]} to {rowsToShow[1]} of {dataLength} entries
+          (filtered from {dataLength} total entries)
+        </p>
+      )}
+
       <div>
         {pages.map((page, index) => {
           return page === "..." ? (

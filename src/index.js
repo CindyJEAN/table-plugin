@@ -1,106 +1,54 @@
 import React, { useEffect, useState } from "react";
 import { Pagination } from "./components/pagination";
+import { RowsPerPageSelect } from "./components/rowsPerPageSelect";
+import { SearchInput } from "./components/searchInput";
+import { TableHeadCell } from "./components/tableHeadCell";
 import styles from "./styles.module.css";
 import { filterArray, formatDate, getPages, sortArray } from "./utils/helper";
 
 export const TablePlugin = ({ data, headCells }) => {
   const dataLength = data.length;
   const [tableData, setTableData] = useState(data);
-  const [sortOrder, setSortOrder] = useState("asc");
-  const [sortField, setSortField] = useState("lastName");
+  const [filteredData, setFilteredData] = useState(data);
+  const [sort, setSort] = useState({ field: "lastName", order: "asc" });
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [lastRow, setLastRow] = useState(0);
-  const [filter, setFilter] = useState("");
+  const [rowsToShow, setRowsToShow] = useState([1, 10]);
 
   useEffect(() => {
     setTableData(data);
+    setFilteredData(data);
   }, []);
 
-  /**
-   * sets field to sort and its order (asc or desc)
-   * @param   {Object}  headCell
-   */
-  function handleSortRequest(headCell) {
-    const order =
-      headCell === sortField && sortOrder === "asc" ? "desc" : "asc";
-    setSortOrder(order);
-    setSortField(headCell);
-  }
-
-  function handleSearchInputChange(e) {
-    setFilter(e.target.value);
-  }
-
-  function handleRowsPerPageChange(e) {
-    setRowsPerPage(e.target.value);
-  }
-
   useEffect(() => {
-    let array = data;
-    if (filter) {
-      array = filterArray(data, filter);
-    }
-    const sortedArray = sortArray(array, sortOrder, sortField);
-    const splicedArray = sortedArray.slice(lastRow - rowsPerPage, lastRow - 1);
+    const sortedArray = sortArray(filteredData, sort);
+    const splicedArray = sortedArray.slice(
+      rowsToShow[0] - 1,
+      rowsToShow[1] - 1
+    );
 
     setTableData(splicedArray);
-  }, [sortOrder, sortField, rowsPerPage, lastRow, filter]);
+  }, [sort, rowsToShow, filteredData]);
 
   return (
     <div className={styles.component}>
       <div className={styles.tableHeader}>
-        <div>
-          <label htmlFor={"rowsPerPage"}>Show</label>
-          <select
-            id="rowsPerPage"
-            value={rowsPerPage}
-            onChange={handleRowsPerPageChange}
-            required
-          >
-            {[10, 25, 50, 100].map((number, index) => (
-              <option key={index} value={number}>
-                {number}
-              </option>
-            ))}
-          </select>
-          <p>entries</p>
-        </div>
-        <div>
-          <label htmlFor={"search"}>Search :</label>
-          <input
-            type="search"
-            id="search"
-            name="search"
-            value={filter}
-            onChange={handleSearchInputChange}
-          />
-        </div>
+        <RowsPerPageSelect
+          rowsPerPage={rowsPerPage}
+          setRowsPerPage={setRowsPerPage}
+        />
+        <SearchInput data={data} setFilteredData={setFilteredData} />
       </div>
       <table>
         <thead>
           <tr>
-            {headCells.map((headCell, index) => {
-              const sortDirection =
-                sortField === headCell.data ? sortOrder : false;
-              const arrowClassName =
-                sortDirection === "asc"
-                  ? "up"
-                  : sortDirection === "desc"
-                  ? "down"
-                  : "default";
-              return (
-                <th
-                  key={index}
-                  onClick={() => handleSortRequest(headCell.data)}
-                >
-                  {headCell.label}
-                  <img
-                    src="/arrow_down.svg"
-                    className={styles[arrowClassName]}
-                  />
-                </th>
-              );
-            })}
+            {headCells.map((headCell, index) => (
+              <TableHeadCell
+                key={index}
+                headCell={headCell}
+                sort={sort}
+                setSort={setSort}
+              />
+            ))}
           </tr>
         </thead>
         <tbody>
@@ -114,7 +62,7 @@ export const TablePlugin = ({ data, headCells }) => {
               })}
             </tr>
           ))}
-          {filter && !tableData.length && (
+          {!filteredData.length && (
             <tr>
               <td colSpan={headCells.length}>No matching records found</td>
             </tr>
@@ -122,10 +70,11 @@ export const TablePlugin = ({ data, headCells }) => {
         </tbody>
       </table>
       <Pagination
-        dataLength={dataLength}
+        originalDataLength={dataLength}
+        dataLength={filteredData.length}
         rowsPerPage={rowsPerPage}
-        lastRow={lastRow}
-        setLastRow={setLastRow}
+        rowsToShow={rowsToShow}
+        setRowsToShow={setRowsToShow}
       />
     </div>
   );
