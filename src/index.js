@@ -4,51 +4,73 @@ import { RowsPerPageSelect } from "./components/rowsPerPageSelect";
 import { SearchInput } from "./components/searchInput";
 import { TableHeadCell } from "./components/tableHeadCell";
 import styles from "./styles.module.css";
+import { getElementsToShow, initData } from "./utils/dataManager";
 import { filterArray, formatDate, getPages, sortArray } from "./utils/helper";
 
+/**
+ * [TablePlugin description]
+ *
+ * @param   {Object}  props       [data description]
+ * @param   {Array}  props.data       [data description]
+ * @param   {Array}  props.headCells  [headCells description]
+ *
+ * @component
+ */
 export const TablePlugin = ({ data, headCells }) => {
-  const dataLength = data.length;
-  const [tableData, setTableData] = useState(data);
-  const [filteredData, setFilteredData] = useState(data);
+  initData(data);
+  // const settings = {
+  //   currentPage: 1,
+  //   rowsPerPage: 10,
+  //   sortField: "lastName",
+  //   isSortOrderAsc: true,
+  // };
+  const [settings, setSettings] = useState({
+    currentPage: 1,
+    rowsPerPage: 10,
+    sortField: "lastName",
+    isSortOrderAsc: true,
+  });
+
+  const [tableData, setTableData] = useState(getElementsToShow(settings));
   const [sort, setSort] = useState({ field: "lastName", order: "asc" });
-  const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [rowsToShow, setRowsToShow] = useState([1, 10]);
 
-  useEffect(() => {
-    setTableData(data);
-    setFilteredData(data);
-  }, []);
+  function changeSortOrder(field) {
+    console.log("settings before", settings);
+    if (settings.sortField === field) {
+      settings.isSortOrderAsc = !settings.isSortOrderAsc;
+    } else settings.isSortOrderAsc = true;
+    settings.sortField = field;
+    console.log("settings after", settings);
+    
+    setTableData(getElementsToShow(settings));
+  }
 
-  useEffect(() => {
-    const sortedArray = sortArray(filteredData, sort);
-    const splicedArray = sortedArray.slice(
-      rowsToShow[0] - 1,
-      rowsToShow[1] - 1
-    );
-
-    setTableData(splicedArray);
-  }, [sort, rowsToShow, filteredData]);
+  function setRowsPerPage(newQty) {
+    settings.rowsPerPage = newQty;
+    setTableData(getElementsToShow(settings));
+  }
 
   return (
     <div className={styles.component}>
       <div className={styles.tableHeader}>
-        <RowsPerPageSelect
+        {/* <RowsPerPageSelect
           rowsPerPage={rowsPerPage}
           setRowsPerPage={setRowsPerPage}
         />
-        <SearchInput data={data} setFilteredData={setFilteredData} />
+        <SearchInput data={data} setFilteredData={setFilteredData} /> */}
       </div>
       <table>
         <thead>
           <tr>
-            {headCells.map((headCell, index) => (
-              <TableHeadCell
-                key={index}
-                headCell={headCell}
-                sort={sort}
-                setSort={setSort}
-              />
-            ))}
+            {headCells.map((headCell, index) => {
+              return (
+                <TableHeadCell
+                  key={index}
+                  headCell={headCell}
+                  changeSortOrder={changeSortOrder}
+                />
+              );
+            })}
           </tr>
         </thead>
         <tbody>
@@ -62,20 +84,20 @@ export const TablePlugin = ({ data, headCells }) => {
               })}
             </tr>
           ))}
-          {!filteredData.length && (
+          {/* {!filteredData.length && (
             <tr>
               <td colSpan={headCells.length}>No matching records found</td>
             </tr>
-          )}
+          )} */}
         </tbody>
       </table>
-      <Pagination
+      {/* <Pagination
         originalDataLength={dataLength}
         dataLength={filteredData.length}
         rowsPerPage={rowsPerPage}
         rowsToShow={rowsToShow}
         setRowsToShow={setRowsToShow}
-      />
+      /> */}
     </div>
   );
 };

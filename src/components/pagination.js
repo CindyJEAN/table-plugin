@@ -14,18 +14,18 @@ export function Pagination({
 
   useEffect(() => {
     const pagesLength = Math.ceil(dataLength / rowsPerPage);
-    setPages(getPages(pagesLength, currentPage));
-
+    
     let firstIndex = rowsToShow[0];
     const newPage = Math.ceil(firstIndex / rowsPerPage);
     let endIndex = newPage * rowsPerPage;
     if (endIndex > dataLength) endIndex = dataLength;
     const rows = [endIndex - rowsPerPage + 1, endIndex];
-
+    
+    setPages(getPages(pagesLength, newPage));
     setCurrentPage(Number(newPage));
     console.log("rows when change in state", rows);
     setRowsToShow(rows);
-  }, [dataLength, rowsPerPage]);
+  }, [currentPage, dataLength, rowsPerPage]);
 
 
 

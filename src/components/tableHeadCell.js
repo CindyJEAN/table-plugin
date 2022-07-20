@@ -1,30 +1,14 @@
 import React from "react";
 import styles from "../styles.module.css";
+import { getSortArrowClassName } from "../utils/dataManager";
 
-export function TableHeadCell({ headCell, sort, setSort }) {
-  const { field, order } = sort;
-  
-  /**
-   * sets field to sort and its order (asc or desc)
-   * @param   {Object}  headCell
-   */
-  function handleSortRequest(headCell) {
-    const sortOrder = headCell === field && order === "asc" ? "desc" : "asc";
-    setSort({ order: sortOrder, field: headCell });
-  }
-
-  const sortDirection = field === headCell.data ? order : false;
-  const arrowClassName =
-    sortDirection === "asc"
-      ? "up"
-      : sortDirection === "desc"
-      ? "down"
-      : "default";
+export function TableHeadCell({ headCell, changeSortOrder }) {
+  const sortArrowClassName = getSortArrowClassName(headCell.data);
 
   return (
-    <th onClick={() => handleSortRequest(headCell.data)}>
+    <th onClick={() => changeSortOrder(headCell.data)}>
       {headCell.label}
-      <img src="/arrow_down.svg" className={styles[arrowClassName]} />
+      <img src="/arrow_down.svg" className={styles[sortArrowClassName]} />
     </th>
   );
 }
