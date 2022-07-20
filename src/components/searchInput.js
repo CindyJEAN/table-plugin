@@ -1,18 +1,9 @@
-import React, { useEffect, useState } from "react";
-import { filterArray } from "../utils/helper";
+import React from "react";
 
-export function SearchInput({ data, setFilteredData }) {
-  const [filter, setFilter] = useState("");
-
+export function SearchInput({ filter, setFilter }) {
   function handleSearchInputChange(e) {
     setFilter(e.target.value);
   }
-
-  useEffect(() => {
-    if (!filter) return setFilteredData(data);
-    const filteredArray = filterArray(data, filter);
-    setFilteredData(filteredArray);
-  }, [data, filter]);
 
   return (
     <div>

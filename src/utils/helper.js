@@ -1,17 +1,16 @@
 /**
  * Sorts array depending on active field and sort order
- * @param   {Array}  data  
- * @param   {Object}  sort  
- * @param   {String}  sort.field  
- * @param   {String}  sort.order  
+ * @param   {Array}  data
+ * @param   {String}  sortField
+ * @param   {Boolean}  isSortOrderAsc
  * @return  {Array}        sorted array
  */
-function sortArray(data, sort) {
+function sortArray(data, sortField, isSortOrderAsc) {
   let dataToSort = [...data];
 
   const sortedArray = dataToSort.sort((a, b) => {
-    const comparison = a[sort.field].localeCompare(b[sort.field]);
-    return comparison * (sort.order === "asc" ? 1 : -1);
+    const comparison = a[sortField].localeCompare(b[sortField]);
+    return comparison * (isSortOrderAsc ? 1 : -1);
   });
   return sortedArray;
 }
@@ -68,7 +67,7 @@ function getPages(length, current) {
 
 /**
  * Returns array or rows that include search input
- * @param   {Array}  data    
+ * @param   {Array}  data
  * @param   {String}  filter  search input
  *
  * @return  {Array}         filtered array

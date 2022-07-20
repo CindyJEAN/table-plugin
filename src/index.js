@@ -5,11 +5,10 @@ import { SearchInput } from "./components/searchInput";
 import { TableHeadCell } from "./components/tableHeadCell";
 import styles from "./styles.module.css";
 import { getElementsToShow, initData } from "./utils/dataManager";
-import { filterArray, formatDate, getPages, sortArray } from "./utils/helper";
+import { formatDate } from "./utils/helper";
 
 /**
- * [TablePlugin description]
- *
+
  * @param   {Object}  props       [data description]
  * @param   {Array}  props.data       [data description]
  * @param   {Array}  props.headCells  [headCells description]
@@ -18,46 +17,46 @@ import { filterArray, formatDate, getPages, sortArray } from "./utils/helper";
  */
 export const TablePlugin = ({ data, headCells }) => {
   initData(data);
-  // const settings = {
-  //   currentPage: 1,
-  //   rowsPerPage: 10,
-  //   sortField: "lastName",
-  //   isSortOrderAsc: true,
-  // };
   const [settings, setSettings] = useState({
     currentPage: 1,
     rowsPerPage: 10,
     sortField: "lastName",
     isSortOrderAsc: true,
+    filter: "",
   });
-
   const [tableData, setTableData] = useState(getElementsToShow(settings));
-  const [sort, setSort] = useState({ field: "lastName", order: "asc" });
 
   function changeSortOrder(field) {
-    console.log("settings before", settings);
     if (settings.sortField === field) {
       settings.isSortOrderAsc = !settings.isSortOrderAsc;
     } else settings.isSortOrderAsc = true;
     settings.sortField = field;
-    console.log("settings after", settings);
-    
     setTableData(getElementsToShow(settings));
   }
 
-  function setRowsPerPage(newQty) {
-    settings.rowsPerPage = newQty;
+  function setRowsPerPage(quantity) {
+    settings.rowsPerPage = Number(quantity);
+    setTableData(getElementsToShow(settings));
+  }
+
+  function setFilter(filter) {
+    settings.filter = filter;
+    setTableData(getElementsToShow(settings));
+  }
+
+  function setPage(page) {
+    settings.currentPage = page;
     setTableData(getElementsToShow(settings));
   }
 
   return (
     <div className={styles.component}>
       <div className={styles.tableHeader}>
-        {/* <RowsPerPageSelect
-          rowsPerPage={rowsPerPage}
+        <RowsPerPageSelect
+          rowsPerPage={settings.rowsPerPage}
           setRowsPerPage={setRowsPerPage}
         />
-        <SearchInput data={data} setFilteredData={setFilteredData} /> */}
+        <SearchInput filter={settings.filter} setFilter={setFilter} />
       </div>
       <table>
         <thead>
@@ -84,20 +83,14 @@ export const TablePlugin = ({ data, headCells }) => {
               })}
             </tr>
           ))}
-          {/* {!filteredData.length && (
+          {!tableData.length && (
             <tr>
               <td colSpan={headCells.length}>No matching records found</td>
             </tr>
-          )} */}
+          )}
         </tbody>
       </table>
-      {/* <Pagination
-        originalDataLength={dataLength}
-        dataLength={filteredData.length}
-        rowsPerPage={rowsPerPage}
-        rowsToShow={rowsToShow}
-        setRowsToShow={setRowsToShow}
-      /> */}
+      <Pagination setPage={setPage} />
     </div>
   );
 };
