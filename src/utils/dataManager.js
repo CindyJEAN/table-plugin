@@ -5,9 +5,13 @@ let dataToShow = [];
 const settings = {
   start: 0,
   quantity: 10,
-  // current: 1,
+  currentPage: 1,
 };
 
+/**
+ * Initialises data in dataManager
+ * @param   {Array}  initialData  
+ */
 function initData(initialData) {
   if (data.length !== 0) return;
   data = initialData;
@@ -16,7 +20,7 @@ function initData(initialData) {
 /**
  * Updates settings and returns rows to show depending on them
  * @param   {Object}  options
- * @param   {Number}  options.currentPage
+ * @param   {Number}  options.start
  * @param   {Number}  options.rowsPerPage
  * @param   {String}  options.sortField
  * @param   {Boolean}  options.isSortOrderAsc
@@ -29,47 +33,64 @@ function getElementsToShow(options) {
   settings.isSortOrderAsc = options.isSortOrderAsc;
   settings.filter = options.filter;
   settings.quantity = options.rowsPerPage;
-  console.log("settings before page", settings);
-  //
-  const page =
-    settings.current !== options.currentPage
-      ? options.currentPage
-      : settings.start === 0
-      ? 1
-      : Math.ceil(settings.start / settings.quantity);
-  settings.start = (page - 1) * settings.quantity;
-  // settings.current = page;
-  console.log("settings after page", settings);
 
   if (settings.filter !== "") {
     dataToShow = filterArray(data, settings.filter);
   } else dataToShow = [...data];
+
+  settings.start = getStartRow(options.start, dataToShow.length);
+
+  settings.currentPage = Math.floor(
+    settings.start === 0 ? 1 : settings.start / settings.quantity + 1
+  );
+
   dataToShow = sortArray(
     dataToShow,
     settings.sortField,
     settings.isSortOrderAsc
   );
-  //
+
+  // console.log("settings in getElementsToShow", settings);
   return dataToShow.slice(settings.start, settings.start + settings.quantity);
 }
 
+/**
+ * Gets new start row depending on changes in options and dataLength
+ * @param   {Number}  newStartSetting  new start from table options
+ * @param   {Number}  dataLength
+ *
+ * @return  {Number}
+ */
+function getStartRow(newStartSetting, dataLength) {
+  let newStart = newStartSetting;
+  if (newStartSetting === settings.start) {
+    newStart =
+      Math.floor(settings.start / settings.quantity) * settings.quantity;
+  }
+  if (dataLength <= newStart) {
+    newStart = Math.floor(dataLength / settings.quantity) * settings.quantity;
+  }
+  return newStart;
+}
+
+/**
+ * gets all pages info for current data and options
+ * @return  {Object}
+ */
 function getPagesInfo() {
-  console.log("settings in pages info", settings);
-  const current = settings.start / settings.quantity + 1;
-  // const current = settings.current;
-  // settings.current = current;
   const max = Math.ceil(dataToShow.length / settings.quantity);
+  const startRow = dataToShow.length === 0 ? 0 : settings.start + 1;
   const endRow =
     dataToShow.length < settings.start + settings.quantity
       ? dataToShow.length
       : settings.start + settings.quantity;
 
-  const pageButtons = getPages(max, current);
+  const pageButtons = getPages(max, settings.currentPage);
 
   return {
-    startRow: settings.start + 1,
+    startRow: startRow,
     endRow,
-    currentPage: current,
+    currentPage: settings.currentPage,
     maxPage: max,
     length: dataToShow.length,
     initialLength: data.length,

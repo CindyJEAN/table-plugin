@@ -4,9 +4,6 @@
   border-collapse: collapse;
   width: 100%;
 }
-/* table {
-  border-collapse: collapse;
-} */
 
 .component th {
   border: solid 1px black;
@@ -44,9 +41,6 @@ img.up {
   align-items: center;
   column-gap: 10px;
 }
-/* .select p {
-  display: inline;
-} */
 
 .pagination {
   display: flex;

@@ -8,46 +8,66 @@ import { getElementsToShow, initData } from "./utils/dataManager";
 import { formatDate } from "./utils/helper";
 
 /**
-
- * @param   {Object}  props       [data description]
- * @param   {Array}  props.data       [data description]
- * @param   {Array}  props.headCells  [headCells description]
+ * @param   {Object}  props       
+ * @param   {Array}  props.data       data rows
+ * @param   {Array}  props.headCells  data columns
  *
  * @component
  */
 export const TablePlugin = ({ data, headCells }) => {
-  initData(data);
   const [settings, setSettings] = useState({
-    currentPage: 1,
+    start: 0,
     rowsPerPage: 10,
     sortField: "lastName",
     isSortOrderAsc: true,
     filter: "",
   });
-  const [tableData, setTableData] = useState(getElementsToShow(settings));
+
+  const [tableData, setTableData] = useState([]);
+
+  useEffect(() => {
+    initData(data);
+    // @ts-ignore
+    setTableData(getElementsToShow(settings));
+  }, []);
 
   function changeSortOrder(field) {
+    let newOrder;
     if (settings.sortField === field) {
-      settings.isSortOrderAsc = !settings.isSortOrderAsc;
-    } else settings.isSortOrderAsc = true;
-    settings.sortField = field;
-    setTableData(getElementsToShow(settings));
+      newOrder = !settings.isSortOrderAsc;
+    } else newOrder = true;
+    setSettings((prev) => ({
+      ...prev,
+      isSortOrderAsc: newOrder,
+      sortField: field,
+    }));
   }
 
   function setRowsPerPage(quantity) {
-    settings.rowsPerPage = Number(quantity);
-    setTableData(getElementsToShow(settings));
+    setSettings((prev) => ({
+      ...prev,
+      rowsPerPage: Number(quantity),
+    }));
   }
 
   function setFilter(filter) {
-    settings.filter = filter;
-    setTableData(getElementsToShow(settings));
+    setSettings((prev) => ({
+      ...prev,
+      filter,
+    }));
   }
 
   function setPage(page) {
-    settings.currentPage = page;
-    setTableData(getElementsToShow(settings));
+    setSettings((prev) => ({
+      ...prev,
+      start: (page - 1) * settings.rowsPerPage,
+    }));
   }
+
+  useEffect(() => {
+    // @ts-ignore
+    setTableData(getElementsToShow(settings));
+  }, [settings]);
 
   return (
     <div className={styles.component}>
