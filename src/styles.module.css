@@ -3,6 +3,11 @@
 .component table {
   border-collapse: collapse;
   width: 100%;
+  overflow-x: auto;
+}
+
+.tableContainer {
+  overflow-x: scroll;
 }
 
 .component th {

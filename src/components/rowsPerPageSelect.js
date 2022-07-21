@@ -1,5 +1,12 @@
 import React from "react";
 
+/**
+ * @description Displays option to select the number of rows per page
+ * @param   {Object}  props
+ * @param   {Number}  props.rowsPerPage     actual option value
+ * @param   {Function}  props.setRowsPerPage  sets new option value
+ * @component
+ */
 export function RowsPerPageSelect({ rowsPerPage, setRowsPerPage }) {
   function handleRowsPerPageChange(e) {
     setRowsPerPage(e.target.value);

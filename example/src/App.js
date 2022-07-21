@@ -2,8 +2,7 @@ import React from "react";
 
 import { TablePlugin } from "table-plugin";
 import "table-plugin/dist/index.css";
-// import employees from "./data/employees.json";
-import employees from "./data/employeesV2.json";
+import employees from "./data/employees.json";
 
 const headCells = [
   { label: "First Name", data: "firstName", type: "text" },

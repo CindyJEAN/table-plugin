@@ -2,9 +2,23 @@ import React, { useEffect, useState } from "react";
 import styles from "../styles.module.css";
 import { getPagesInfo } from "../utils/dataManager";
 
-export function Pagination({ setPage }) {
-  const { startRow, endRow, currentPage, maxPage, pageButtons, isFiltered, length, initialLength } =
-    getPagesInfo();
+/**
+ * @description Displays number of entries shown and if filtered from search, and buttons to change pages
+ * @param   {Object}  props
+ * @param   {Function}  props.setRowStart sets new rowStart from page change
+ * @component
+ */
+export function Pagination({ setRowStart }) {
+  const {
+    startRow,
+    endRow,
+    currentPage,
+    maxPage,
+    pageButtons,
+    isFiltered,
+    length,
+    initialLength,
+  } = getPagesInfo();
 
   const moveButtons = [
     {
@@ -33,7 +47,7 @@ export function Pagination({ setPage }) {
           ) : (
             <button
               key={index}
-              onClick={() => setPage(page)}
+              onClick={() => setRowStart(page)}
               className={currentPage !== page ? styles.inactive : ""}
             >
               {page}
@@ -43,7 +57,7 @@ export function Pagination({ setPage }) {
         {moveButtons.map((btn) => (
           <button
             key={btn.label}
-            onClick={() => setPage(currentPage + btn.move)}
+            onClick={() => setRowStart(currentPage + btn.move)}
             className={btn.disabled ? styles.disabled : ""}
           >
             {btn.label}

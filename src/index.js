@@ -8,10 +8,10 @@ import { getElementsToShow, initData } from "./utils/dataManager";
 import { formatDate } from "./utils/helper";
 
 /**
- * @param   {Object}  props       
+ * @description Sortable table with pagination and search feature
+ * @param   {Object}  props
  * @param   {Array}  props.data       data rows
- * @param   {Array}  props.headCells  data columns
- *
+ * @param   {Array<Object>}  props.headCells  columns : {data, label, type}
  * @component
  */
 export const TablePlugin = ({ data, headCells }) => {
@@ -57,7 +57,7 @@ export const TablePlugin = ({ data, headCells }) => {
     }));
   }
 
-  function setPage(page) {
+  function setRowStart(page) {
     setSettings((prev) => ({
       ...prev,
       start: (page - 1) * settings.rowsPerPage,
@@ -78,39 +78,41 @@ export const TablePlugin = ({ data, headCells }) => {
         />
         <SearchInput filter={settings.filter} setFilter={setFilter} />
       </div>
-      <table>
-        <thead>
-          <tr>
-            {headCells.map((headCell, index) => {
-              return (
-                <TableHeadCell
-                  key={index}
-                  headCell={headCell}
-                  changeSortOrder={changeSortOrder}
-                />
-              );
-            })}
-          </tr>
-        </thead>
-        <tbody>
-          {tableData?.map((row, rowIndex) => (
-            <tr key={rowIndex}>
-              {headCells.map((headCell) => {
-                const value = row[headCell.data];
-                const formatedValue =
-                  headCell.type === "date" ? formatDate(value) : value;
-                return <td key={headCell.data}>{formatedValue || ""}</td>;
+      <div className={styles.tableContainer}>
+        <table>
+          <thead>
+            <tr>
+              {headCells.map((headCell, index) => {
+                return (
+                  <TableHeadCell
+                    key={index}
+                    headCell={headCell}
+                    changeSortOrder={changeSortOrder}
+                  />
+                );
               })}
             </tr>
-          ))}
-          {!tableData.length && (
-            <tr>
-              <td colSpan={headCells.length}>No matching records found</td>
-            </tr>
-          )}
-        </tbody>
-      </table>
-      <Pagination setPage={setPage} />
+          </thead>
+          <tbody>
+            {tableData?.map((row, rowIndex) => (
+              <tr key={rowIndex}>
+                {headCells.map((headCell) => {
+                  const value = row[headCell.data];
+                  const formatedValue =
+                    headCell.type === "date" ? formatDate(value) : value;
+                  return <td key={headCell.data}>{formatedValue || ""}</td>;
+                })}
+              </tr>
+            ))}
+            {!tableData.length && (
+              <tr>
+                <td colSpan={headCells.length}>No matching records found</td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
+      <Pagination setRowStart={setRowStart} />
     </div>
   );
 };
