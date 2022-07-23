@@ -7,7 +7,7 @@
 }
 
 .tableContainer {
-  overflow-x: scroll;
+  overflow-x: auto;
 }
 
 .component th {

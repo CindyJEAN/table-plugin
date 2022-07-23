@@ -57,7 +57,9 @@ export function Pagination({ setRowStart }) {
         {moveButtons.map((btn) => (
           <button
             key={btn.label}
-            onClick={() => setRowStart(currentPage + btn.move)}
+            onClick={() => {
+              !btn.disabled && setRowStart(currentPage + btn.move);
+            }}
             className={btn.disabled ? styles.disabled : ""}
           >
             {btn.label}
