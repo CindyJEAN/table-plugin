@@ -1,9 +1,9 @@
 import React from "react";
 import styles from "../styles.module.css";
 import { getSortArrowClassName } from "../utils/dataManager";
-import icon from "../assets/arrow_down.svg";
+// import icon from "../assets/arrow_down.svg";
 // import icon from "./assets/arrow_down.svg";
-// const icon = `${require("./arrow_down.svg")}`;
+// const icon = `${require("arrow_down.svg")}`;
 
 /**
  * @description Displays a headCell with a sort arrow
@@ -18,7 +18,7 @@ export function TableHeadCell({ headCell, changeSortOrder }) {
   return (
     <th onClick={() => changeSortOrder(headCell.data)}>
       {headCell.label}
-      <img src={icon} className={styles[sortArrowClassName]} />
+      <img src={`${require("./arrow_down.svg")}`} className={styles[sortArrowClassName]} />
     </th>
   );
 }
