@@ -16,26 +16,20 @@
   cursor: pointer;
 }
 
-.component th img {
+/* .component th svg {
   width: 10px;
   margin-left: 10px;
-}
+} */
 
 .component td {
   border: solid 1px black;
   padding: 5px 0.5rem;
 }
 
-img.default {
+svg.unselected {
   opacity: 0.2;
 }
-img.down {
-  opacity: 1;
-}
-img.up {
-  opacity: 1;
-  transform: rotate(0.5turn);
-}
+
 .tableHeader {
   display: flex;
   justify-content: space-between;

@@ -1,10 +1,8 @@
 import React from "react";
 import styles from "../styles.module.css";
-import { getSortArrowClassName } from "../utils/dataManager";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSortDown, faSortUp } from '@fortawesome/free-solid-svg-icons';
-// import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
-
+import { getSortArrowInfo } from "../utils/dataManager";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSortDown, faSortUp } from "@fortawesome/free-solid-svg-icons";
 
 /**
  * @description Displays a headCell with a sort arrow
@@ -14,17 +12,16 @@ import { faSortDown, faSortUp } from '@fortawesome/free-solid-svg-icons';
  * @component
  */
 export function TableHeadCell({ headCell, changeSortOrder }) {
-  const sortArrowClassName = getSortArrowClassName(headCell.data);
+  const {direction, className} = getSortArrowInfo(headCell.data);
 
   return (
     <th onClick={() => changeSortOrder(headCell.data)}>
       {headCell.label}
-      {/* <img src={icon} className={styles[sortArrowClassName]} /> */}
-      {/* <FontAwesome
-        className={styles[sortArrowClassName]}
-        name="arrow-down" /> */}
-        <FontAwesomeIcon icon={faSortDown} />
-        {/* <FontAwesomeIcon icon={solid('arrow-down')} /> */}
+
+      <FontAwesomeIcon
+        icon={direction === "up" ? faSortUp : faSortDown}
+        className={styles[className]}
+      />
     </th>
   );
 }

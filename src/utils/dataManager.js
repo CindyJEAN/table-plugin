@@ -10,7 +10,7 @@ const settings = {
 
 /**
  * Initialises data in dataManager
- * @param   {Array}  initialData  
+ * @param   {Array}  initialData
  */
 function initData(initialData) {
   if (data.length !== 0) return;
@@ -100,15 +100,15 @@ function getPagesInfo() {
 }
 
 /**
- * get className for arrow in headCell,
- * to style depending on sort field and order
+ * get direction of arrow in headCell and className to apply
  * @param   {String}  headCell
- * @return  {String}            className
+ * @return  {Object}           direction, className
  */
-function getSortArrowClassName(headCell) {
-  if (headCell !== settings.sortField) return "default";
-  if (settings.isSortOrderAsc) return "up";
-  else return "down";
+function getSortArrowInfo(headCell) {
+  const isSelected = headCell === settings.sortField;
+  const className = !isSelected ? "unselected" : "";
+  const direction = isSelected && settings.isSortOrderAsc ? "up" : "down";
+  return { direction, className };
 }
 
-export { getPagesInfo, getElementsToShow, initData, getSortArrowClassName };
+export { getPagesInfo, getElementsToShow, initData, getSortArrowInfo };
