@@ -95,7 +95,10 @@ export const TablePlugin = ({ data, headCells }) => {
           </thead>
           <tbody>
             {tableData?.map((row, rowIndex) => (
-              <tr key={rowIndex}>
+              <tr
+                key={rowIndex}
+                className={styles[rowIndex % 2 !== 0 ? "even" : "odd"]}
+              >
                 {headCells.map((headCell) => {
                   const value = row[headCell.data];
                   const formatedValue =

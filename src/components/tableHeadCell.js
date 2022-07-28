@@ -12,16 +12,18 @@ import { faSortDown, faSortUp } from "@fortawesome/free-solid-svg-icons";
  * @component
  */
 export function TableHeadCell({ headCell, changeSortOrder }) {
-  const {direction, className} = getSortArrowInfo(headCell.data);
+  const { direction, className } = getSortArrowInfo(headCell.data);
 
   return (
     <th onClick={() => changeSortOrder(headCell.data)}>
-      {headCell.label}
+      <div>
+        <p>{headCell.label}</p>
 
-      <FontAwesomeIcon
-        icon={direction === "up" ? faSortUp : faSortDown}
-        className={styles[className]}
-      />
+        <FontAwesomeIcon
+          icon={direction === "up" ? faSortUp : faSortDown}
+          className={styles[className]}
+        />
+      </div>
     </th>
   );
 }

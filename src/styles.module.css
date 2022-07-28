@@ -1,29 +1,64 @@
 /* add css module styles here (optional) */
+.component {
+  width: 100%;
+}
 
 .component table {
   border-collapse: collapse;
   width: 100%;
-  overflow-x: auto;
+  clear: both;
 }
 
 .tableContainer {
   overflow-x: auto;
+  width: 100%;
 }
 
 .component th {
   border: solid 1px black;
-  padding: 0.5rem 1rem;
+  padding: 0.5rem;
   cursor: pointer;
 }
 
-/* .component th svg {
+.component th div {
+  min-height: 45px;
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.component th p {
+  margin: 0;
+}
+
+.component th svg {
   width: 10px;
-  margin-left: 10px;
-} */
+  margin-left: 6px;
+}
 
 .component td {
   border: solid 1px black;
   padding: 5px 0.5rem;
+}
+
+.component tbody td {
+  border-bottom-color: #c9c9c9;
+}
+.component tbody tr:last-of-type td {
+  border-bottom-color: black;
+}
+
+.component tbody tr:hover {
+  background-color: #e0ebeb;
+}
+
+.odd {
+  background-color: #fafafa;
+}
+
+.even {
+  background-color: #fff;
 }
 
 svg.unselected {
