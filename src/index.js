@@ -67,7 +67,7 @@ export const TablePlugin = ({ data, headCells }) => {
   useEffect(() => {
     // @ts-ignore
     setTableData(getElementsToShow(settings));
-  }, [settings]);
+  }, [data, settings]);
 
   return (
     <div className={styles.component}>
