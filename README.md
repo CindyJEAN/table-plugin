@@ -16,6 +16,7 @@ npm install --save table-plugin
 
 ```jsx
 import React from "react";
+import "table-plugin/dist/index.css";
 import { TablePlugin } from "table-plugin";
 
 export function MyComponent() {

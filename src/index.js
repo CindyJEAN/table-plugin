@@ -43,21 +43,21 @@ export const TablePlugin = ({ data, headCells }) => {
     }));
   }
 
-  function setRowsPerPage(quantity) {
+  function changeRowsPerPage(quantity) {
     setSettings((prev) => ({
       ...prev,
       rowsPerPage: Number(quantity),
     }));
   }
 
-  function setFilter(filter) {
+  function changeFilter(filter) {
     setSettings((prev) => ({
       ...prev,
       filter,
     }));
   }
 
-  function setRowStart(page) {
+  function changeRowStart(page) {
     setSettings((prev) => ({
       ...prev,
       start: (page - 1) * settings.rowsPerPage,
@@ -74,9 +74,9 @@ export const TablePlugin = ({ data, headCells }) => {
       <div className={styles.tableHeader}>
         <RowsPerPageSelect
           rowsPerPage={settings.rowsPerPage}
-          setRowsPerPage={setRowsPerPage}
+          changeRowsPerPage={changeRowsPerPage}
         />
-        <SearchInput filter={settings.filter} setFilter={setFilter} />
+        <SearchInput filter={settings.filter} handleSearchInputChange={changeFilter} />
       </div>
       <div className={styles.tableContainer}>
         <table>
@@ -115,7 +115,7 @@ export const TablePlugin = ({ data, headCells }) => {
           </tbody>
         </table>
       </div>
-      <Pagination setRowStart={setRowStart} />
+      <Pagination changeRowStart={changeRowStart} />
     </div>
   );
 };

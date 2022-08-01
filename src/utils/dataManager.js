@@ -50,7 +50,6 @@ function getElementsToShow(options) {
     settings.isSortOrderAsc
   );
 
-  // console.log("settings in getElementsToShow", settings);
   return dataToShow.slice(settings.start, settings.start + settings.quantity);
 }
 

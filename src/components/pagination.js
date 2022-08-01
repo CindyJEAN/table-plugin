@@ -5,10 +5,10 @@ import { getPagesInfo } from "../utils/dataManager";
 /**
  * @description Displays number of entries shown and if filtered from search, and buttons to change pages
  * @param   {Object}  props
- * @param   {Function}  props.setRowStart sets new rowStart from page change
+ * @param   {Function}  props.changeRowStart sets new rowStart from page change
  * @component
  */
-export function Pagination({ setRowStart }) {
+export function Pagination({ changeRowStart }) {
   const {
     startRow,
     endRow,
@@ -47,7 +47,7 @@ export function Pagination({ setRowStart }) {
           ) : (
             <button
               key={index}
-              onClick={() => setRowStart(page)}
+              onClick={() => changeRowStart(page)}
               className={currentPage !== page ? styles.inactive : ""}
             >
               {page}
@@ -58,7 +58,7 @@ export function Pagination({ setRowStart }) {
           <button
             key={btn.label}
             onClick={() => {
-              !btn.disabled && setRowStart(currentPage + btn.move);
+              !btn.disabled && changeRowStart(currentPage + btn.move);
             }}
             className={btn.disabled ? styles.disabled : ""}
           >
