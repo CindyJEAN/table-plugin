@@ -15,6 +15,7 @@ import { formatDate } from "./utils/helper";
  * @component
  */
 export const TablePlugin = ({ data, headCells }) => {
+  console.log("data in plugin", data)
   const [settings, setSettings] = useState({
     start: 0,
     rowsPerPage: 10,
