@@ -29,7 +29,7 @@ export function Pagination({ changeRowStart }) {
     {
       label: "Next",
       move: 1,
-      disabled: Boolean(currentPage === maxPage) || !pageButtons.lengt,
+      disabled: Boolean(currentPage === maxPage) || !pageButtons.length,
     },
   ];
 
