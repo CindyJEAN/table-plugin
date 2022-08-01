@@ -4,7 +4,7 @@ import { RowsPerPageSelect } from "./components/rowsPerPageSelect";
 import { SearchInput } from "./components/searchInput";
 import { TableHeadCell } from "./components/tableHeadCell";
 import styles from "./styles.module.css";
-import { getElementsToShow, initData } from "./utils/dataManager";
+import { getElementsToShow, updateData } from "./utils/dataManager";
 import { formatDate } from "./utils/helper";
 
 /**
@@ -15,7 +15,6 @@ import { formatDate } from "./utils/helper";
  * @component
  */
 export const TablePlugin = ({ data, headCells }) => {
-  console.log("data in plugin", data)
   const [settings, setSettings] = useState({
     start: 0,
     rowsPerPage: 10,
@@ -27,7 +26,7 @@ export const TablePlugin = ({ data, headCells }) => {
   const [tableData, setTableData] = useState([]);
 
   useEffect(() => {
-    initData(data);
+    updateData(data);
     // @ts-ignore
     setTableData(getElementsToShow(settings));
   }, []);
@@ -65,7 +64,15 @@ export const TablePlugin = ({ data, headCells }) => {
     }));
   }
 
+  // useEffect(() => {
+  //   // @ts-ignore
+  //   setTableData(getElementsToShow(settings));
+  // }, [settings]);
+
   useEffect(() => {
+    if (data.length !== tableData.length) {
+      updateData(data);
+    }
     // @ts-ignore
     setTableData(getElementsToShow(settings));
   }, [data, settings]);
@@ -77,7 +84,10 @@ export const TablePlugin = ({ data, headCells }) => {
           rowsPerPage={settings.rowsPerPage}
           changeRowsPerPage={changeRowsPerPage}
         />
-        <SearchInput filter={settings.filter} handleSearchInputChange={changeFilter} />
+        <SearchInput
+          filter={settings.filter}
+          handleSearchInputChange={changeFilter}
+        />
       </div>
       <div className={styles.tableContainer}>
         <table>

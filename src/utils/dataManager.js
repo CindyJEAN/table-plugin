@@ -9,12 +9,11 @@ const settings = {
 };
 
 /**
- * Initialises data in dataManager
- * @param   {Array}  initialData
+ * updates data in dataManager
+ * @param   {Array}  newData
  */
-function initData(initialData) {
-  if (data.length !== 0) return;
-  data = initialData;
+function updateData(newData) {
+  data = newData;
 }
 
 /**
@@ -110,4 +109,4 @@ function getSortArrowInfo(headCell) {
   return { direction, className };
 }
 
-export { getPagesInfo, getElementsToShow, initData, getSortArrowInfo };
+export { getPagesInfo, getElementsToShow, updateData, getSortArrowInfo };
