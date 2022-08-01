@@ -29,9 +29,26 @@ export function Pagination({ changeRowStart }) {
     {
       label: "Next",
       move: 1,
-      disabled: Boolean(currentPage === maxPage),
+      disabled: Boolean(currentPage === maxPage) || !pageButtons.lengt,
     },
   ];
+
+  /**
+   * @param   {Object}  btn  button info
+   * @return button jsx
+   */
+  function moveButton(btn) {
+    return (
+      <button
+        onClick={() => {
+          !btn.disabled && changeRowStart(currentPage + btn.move);
+        }}
+        className={btn.disabled ? styles.disabled : ""}
+      >
+        {btn.label}
+      </button>
+    );
+  }
 
   return (
     <div className={styles.pagination}>
@@ -39,8 +56,8 @@ export function Pagination({ changeRowStart }) {
         Showing {startRow} to {endRow} entries of {length} entries
         {isFiltered && ` (filtered from ${initialLength} total entries)`}
       </p>
-
       <div>
+        {moveButton(moveButtons[0])}
         {pageButtons.map((page, index) => {
           return page === "..." ? (
             <p key={index}>...</p>
@@ -48,23 +65,13 @@ export function Pagination({ changeRowStart }) {
             <button
               key={index}
               onClick={() => changeRowStart(page)}
-              className={currentPage !== page ? styles.inactive : ""}
+              className={currentPage !== page ? styles.inactive : styles.active}
             >
               {page}
             </button>
           );
         })}
-        {moveButtons.map((btn) => (
-          <button
-            key={btn.label}
-            onClick={() => {
-              !btn.disabled && changeRowStart(currentPage + btn.move);
-            }}
-            className={btn.disabled ? styles.disabled : ""}
-          >
-            {btn.label}
-          </button>
-        ))}
+        {moveButton(moveButtons[1])}
       </div>
     </div>
   );

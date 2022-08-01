@@ -98,6 +98,10 @@ svg.noSort {
   border: 1px solid rgb(200, 200, 200);
 }
 
+.pagination button.active {
+  border: 1px solid grey;
+}
+
 .pagination button.inactive {
   border: none;
   background-color: transparent;
