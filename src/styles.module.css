@@ -61,7 +61,7 @@
   background-color: #fff;
 }
 
-svg.unselected {
+svg.noSort {
   opacity: 0.2;
 }
 
@@ -103,3 +103,5 @@ svg.unselected {
   border: none;
   background-color: transparent;
 }
+
+/* Extra style */

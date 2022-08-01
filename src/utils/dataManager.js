@@ -106,7 +106,7 @@ function getPagesInfo() {
  */
 function getSortArrowInfo(headCell) {
   const isSelected = headCell === settings.sortField;
-  const className = !isSelected ? "unselected" : "";
+  const className = !isSelected ? "noSort" : "";
   const direction = isSelected && settings.isSortOrderAsc ? "up" : "down";
   return { direction, className };
 }
