@@ -4,7 +4,7 @@
   "description": "Sortable table with pagination and search features",
   "author": "CindyJEAN",
   "license": "MIT",
-  "repository": "CindyJEAN/table-plugin",
+  "repository": "https://github.com/CindyJEAN/table-plugin.git",
   "publishConfig": {
     "@CindyJEAN:registry": "https://npm.pkg.github.com"
   },
