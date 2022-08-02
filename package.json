@@ -1,6 +1,6 @@
 {
   "name": "table-plugin",
-  "version": "1.0.0",
+  "version": "1.0.6",
   "description": "Sortable table with pagination and search features",
   "author": "CindyJEAN",
   "license": "MIT",
@@ -12,7 +12,7 @@
   "module": "dist/index.modern.js",
   "source": "src/index.js",
   "engines": {
-    "node": ">=10"
+    "node": ">=16"
   },
   "scripts": {
     "build": "microbundle-crl --no-compress --format modern,cjs",
