@@ -5,6 +5,9 @@
   "author": "CindyJEAN",
   "license": "MIT",
   "repository": "CindyJEAN/table-plugin",
+  "publishConfig": {
+    "@CindyJEAN:registry": "https://npm.pkg.github.com"
+  },
   "main": "dist/index.js",
   "module": "dist/index.modern.js",
   "source": "src/index.js",
